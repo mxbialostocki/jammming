@@ -24,6 +24,7 @@ class App extends React.Component {
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
   }
   addTrack(track) {
     if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
@@ -36,6 +37,18 @@ class App extends React.Component {
   updatePlaylistName(name) {
     this.setState({playlistName: name});
   }
+  savePlaylist(playlistName) {
+    //get uris from current playlist
+    const trackURIs = this.state.playlistTracks.map(track => track.uri);
+    // generate and save playlist to SPOTIFY
+    Spotify.saveplaylist(this.state.playlistName, trackURIs);
+    //playlist reset
+    this.setState({playlistTracks: [], playlistName: 'New Playlist'});
+// let newFilteredResults = this.state.searchResults;
+// this.setState({filteredResults: newFilteredResults});
+
+
+  }
   render() {
     return (
       <div>
@@ -44,7 +57,7 @@ class App extends React.Component {
             <!-- Add a SearchBar Component -->
             <div className="App-playlist">
               <SearchResults searchResults={this.state.searchResults} onAdd={this.state.addTrack}>
-              <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.state.removeTrack} onNameChange={this.state.updatePlaylistName}>
+              <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.state.removeTrack} onNameChange={this.state.updatePlaylistName} onSave={this.state.savePlaylist}>
             </div>
           </div>
       </div>
