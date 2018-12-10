@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Track from './Track/Track';
-import 'TrackList.css';
-import SearchResults from './SearchResults/SearchResults';
-import App from './App/App';
+import Track from '../Track/Track';
+import './TrackList.css';
+import SearchResults from '../SearchResults/SearchResults';
+import App from '../App/App';
 
 class TrackList extends React.Component {
   render() {

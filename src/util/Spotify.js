@@ -28,7 +28,7 @@ const Spotify = {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
-    }).then.(response => {
+    }).then(response => {
       debugger
       if (response.ok) {
         return response.json();
@@ -53,9 +53,9 @@ const Spotify = {
   savePlaylist(playlistName, trackURIs) {
     const accessToken = Spotify.getAccessToken();
     const headers = {Authorization: `Bearer ${accessToken}`};
-    let userID = '';
-    let playlistID = '';
-    let snapshotID = '';
+    let user_id = '';
+    let playlist_id = '';
+    let snapshot_id = '';
 
     if (playlistName !=='' && trackURIs !=='') {
       return fetch(`https://api.spotify.com/v1/me`, {headers: headers}).then(response => {
@@ -67,7 +67,7 @@ const Spotify = {
         }
       }).then(jsonResponse => {
         if (jsonResponse.id) {
-          userID = jsonResponse.id;
+          user_id = jsonResponse.id;
         }
         // making new playlist via Spotify API??
         return fetch(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
@@ -84,7 +84,7 @@ const Spotify = {
         }).then(jsonResponse => {
           debugger
           if (jsonResponse.id) {
-            playlistID = jsonResponse.id;
+            playlist_id = jsonResponse.id;
           }
           return fetch(`https://api.spotify.com/v1/users/${user_id}/playlists/${playlist_id}/tracks`, {
             headers: headers,

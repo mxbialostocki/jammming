@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom';
 import './SearchBar.css';
 
 class SearchBar extends React.Component {
-  constructor() {
+  constructor(props) {
     super(props);
     this.state = {term: ''}
     this.search = this.search.bind(this);
     this.handleTermChange = this.handleTermChange.bind(this);
-    this.handleEnter = this.handleEnter.bind(this);
   }
   search() {
-    if (this.state.term !='') {
+    if (this.state.term !=='') {
       this.props.onSearch(this.state.term)
     }
   }
