@@ -1,6 +1,6 @@
 let accessToken = '';
 const clientID = '2fb01d36c7ba4431898eb66706cea357';
-const redirectURI = 'http://localhost:3000/';
+const redirectURI = 'http://MXB_JMMM.surge.sh';
 
 const Spotify = {
   getAccessToken() {
