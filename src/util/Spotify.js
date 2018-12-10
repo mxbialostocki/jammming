@@ -20,7 +20,81 @@ const Spotify = {
         window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-private&redirect_uri=${redirectURI}`;
       }
     }
+  },
+  search(term) {
+    //begin
+    accessToken = Spotify.getAccessToken();
+    return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }).then.(response => {
+      debugger
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Request failed!');
+    }).then(jsonResponse => {
+      debugger
+      if (!jsonResponse.tracks.items) {
+        // if != then return empty
+        return [];
+      } else {
+        return jsonResponse.tracks.items.map(track => ({
+          id: track.id,
+          name: track.name,
+          artist: track.artists[0].name,
+          uri: track.uri,
+          preview: track.preview_url,
+        }));
+      }
+    });
+  },
+  savePlaylist(playlistName, trackURIs) {
+    const accessToken = Spotify.getAccessToken();
+    const headers = {Authorization: `Bearer ${accessToken}`};
+    let userID = '';
+    let playlistID = '';
+    let snapshotID = '';
+
+    if (playlistName !=='' && trackURIs !=='') {
+      return fetch(`https://api.spotify.com/v1/me`, {headers: headers}).then(response => {
+        debugger
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log('failed to get userID');
+        }
+      }).then(jsonResponse => {
+        if (jsonResponse.id) {
+          userID = jsonResponse.id;
+        }
+        // making new playlist via Spotify API??
+        return fetch(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
+          headers: headers,
+          method: 'POST',
+          body: JSON.stringify({name: playlistName})
+        }).then(response => {
+          debugger
+          if (response.ok) {
+            return response.json();
+          } else {
+            console.log('failed to create new playlist');
+          }
+        }).then(jsonResponse => {
+          debugger
+          if (jsonResponse.id) {
+            playlistID = jsonResponse.id;
+          }
+          return fetch(`https://api.spotify.com/v1/users/${user_id}/playlists/${playlist_id}/tracks`, {
+            headers: headers,
+            method: 'POST',
+            body: JSON.stringify({uris: trackURIs})
+          });
+        });
+      });
+    }
   }
-}
+};
 
 export default Spotify;
