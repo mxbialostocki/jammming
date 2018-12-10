@@ -7,7 +7,7 @@ import App from '../App/App';
 
 class Playlist extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 //bindings
     this.handleNameChange = this.handleNameChange.bind(this);
   }
